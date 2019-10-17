@@ -22,6 +22,7 @@ namespace MyVet.Web.DATA.Entities
 
 
 
+        [Display(Name = "Comentario")] 
         public string Remarks { get; set; }
 
         [Display(Name = "Esta Disponible?")]

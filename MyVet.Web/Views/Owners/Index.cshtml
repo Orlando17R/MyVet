@@ -1,15 +1,15 @@
 ﻿@model IEnumerable<MyVet.Web.DATA.Entities.Owner>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Propietarios";
 }
 
-<h2>Index</h2>
+<h2>Propietarios</h2>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create">Crear Propietario</a>
 </p>
-<table class="table">
+<table class="table table-bordered table-responsive table-hover table-striped">
     <thead>
         <tr>
             <th>
@@ -55,9 +55,9 @@
                 @Html.DisplayFor(modelItem => item.Address)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                <a asp-action="Edit" asp-route-id="@item.Id">Editar</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Detalles</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Eliminar</a>
             </td>
         </tr>
 }

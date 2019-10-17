@@ -10,12 +10,12 @@ namespace MyVet.Web.DATA.Entities
     {
         public int Id { get; set; }
 
-        [Display(Name = "Name")]
+        [Display(Name = "Nombre")]
         [MaxLength(50, ErrorMessage = "The {0} field can not have more than {1} characters.")]
         [Required(ErrorMessage = "The field {0} is mandatory.")]
         public string Name { get; set; }
 
-        [Display(Name = "Image")]
+        [Display(Name = "Imagen")]
         public string ImageUrl { get; set; }
 
         [MaxLength(50, ErrorMessage = "The {0} field can not have more than {1} characters.")]

@@ -16,30 +16,31 @@ namespace MyVet.Web.DATA.Entities
 
         [Required(ErrorMessage = "El campo {0} es obligatorio")]
         [MaxLength(50, ErrorMessage = "el campo {0} no puede ser mayor de {1} caracteres ")]
-        [Display(Name ="First Name")]
+        [Display(Name ="Primer Nombre")]
         public string FirstName { get; set; }
 
         [Required(ErrorMessage = "El campo {0} es obligatorio")]
         [MaxLength(50, ErrorMessage = "el campo {0} no puede ser mayor de {1} caracteres ")]
-        [Display(Name = "Last Name")]
+        [Display(Name = "Apellido")]
         public string LastName { get; set; }
 
         [MaxLength(20, ErrorMessage = "el campo {0} no puede ser mayor de {1} caracteres ")]
-        [Display(Name = "Fixed Phone")]
+        [Display(Name = "Telefono")]
         public string FixedPhone { get; set; }
 
         [Required(ErrorMessage = "El campo {0} es obligatorio")]
         [MaxLength(30, ErrorMessage = "el campo {0} no puede ser mayor de {1} caracteres ")]
-        [Display(Name = "Cell Phone")]
+        [Display(Name = "Celular")]
         public string CellPhone { get; set; }
 
         [MaxLength(100, ErrorMessage = "el campo {0} no puede ser mayor de {1} caracteres ")]
+        [Display(Name = "Direccion")]
         public string Address { get; set; }
 
-        [Display(Name = "Owner")] 
+        [Display(Name = "Propietario")] 
         public string FullName => $"{FirstName} {LastName}";
 
-        [Display(Name = "Owner")] 
+        [Display(Name = "Propietario")] 
         public string FullNameWithDocument => $"{FirstName} {LastName} - {Document}";
 
         //RELACION TABLAS BDD
