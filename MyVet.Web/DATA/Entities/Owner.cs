@@ -10,7 +10,7 @@ namespace MyVet.Web.DATA.Entities
     {
         public int Id { get; set; }
 
-        [Required(ErrorMessage ="El campo {0} es obligatorio")]
+        /*[Required(ErrorMessage ="El campo {0} es obligatorio")]
         [MaxLength(30, ErrorMessage ="el campo {0} no puede ser mayor de {1} caracteres ")]
         public string Document { get; set; }
 
@@ -42,8 +42,10 @@ namespace MyVet.Web.DATA.Entities
 
         [Display(Name = "Propietario")] 
         public string FullNameWithDocument => $"{FirstName} {LastName} - {Document}";
+        */
 
         //RELACION TABLAS BDD
+        public User User { get; set; }
         public ICollection<Pet> Pets { get; set; }
         public ICollection<Agenda> Agendas { get; set; }
     }
