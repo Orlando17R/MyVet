@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using MyVet.Web.HELPERS;
 using MyVet.Web.Models;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace MyVet.Web.Controllers
 {
@@ -17,18 +15,21 @@ namespace MyVet.Web.Controllers
             _userHelper = userHelper;
         }
 
-
-        [HttpGet]
         public IActionResult Login()
         {
-        return View();
+            if (User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            return View();
         }
 
         [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
-        if (!ModelState.IsValid)
-        {
+            if (ModelState.IsValid)
+            {
                 var result = await _userHelper.LoginAsync(model);
                 if (result.Succeeded)
                 {
@@ -39,12 +40,16 @@ namespace MyVet.Web.Controllers
 
                     return RedirectToAction("Index", "Home");
                 }
+            }
 
-         }
-
-            ModelState.AddModelError(string.Empty, "No se pudo logear.");
+            ModelState.AddModelError(string.Empty, "ERROR AL LOGEAR.");
             return View(model);
+        }
 
+        public async Task<IActionResult> Logout()
+        {
+            await _userHelper.LogoutAsync();
+            return RedirectToAction("Index", "Home");
         }
     }
 }

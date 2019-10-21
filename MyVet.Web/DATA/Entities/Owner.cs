@@ -8,7 +8,7 @@ namespace MyVet.Web.DATA.Entities
 {
     public class Owner
     {
-        public int Id { get; set; }
+
 
         /*[Required(ErrorMessage ="El campo {0} es obligatorio")]
         [MaxLength(30, ErrorMessage ="el campo {0} no puede ser mayor de {1} caracteres ")]
@@ -45,6 +45,8 @@ namespace MyVet.Web.DATA.Entities
         */
 
         //RELACION TABLAS BDD
+        public int Id { get; set; }
+        
         public User User { get; set; }
         public ICollection<Pet> Pets { get; set; }
         public ICollection<Agenda> Agendas { get; set; }
