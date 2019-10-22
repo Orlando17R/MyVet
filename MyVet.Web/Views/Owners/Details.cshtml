@@ -92,7 +92,7 @@ else
                     <td>
                         @if (!string.IsNullOrEmpty(item.ImageUrl))
                         {
-                            <img src="@Url.Content(item.ImageUrl)" alt="Image" style="width:200px;height:200px;" />
+                            <img src="@Url.Content(item.ImageUrl)" alt="Image" style="width:200px;height:200px;max-width: 100%; height: auto;" />
                         }
 
 
@@ -101,7 +101,7 @@ else
                         @Html.DisplayFor(modelItem => item.Race)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Born)
+                        @Html.DisplayFor(modelItem => item.BornLocal)
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.Remarks)

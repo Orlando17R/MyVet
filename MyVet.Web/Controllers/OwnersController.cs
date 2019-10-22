@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -23,17 +24,20 @@ namespace MyVet.Web.Controllers
         private readonly IUserHelper _userHelper;
         private readonly ICombosHelper _combosHeper;
         private readonly IConverterHelper _converterHelper;
+        private readonly IImageHelper _imageHelper;
 
         public OwnersController(
             DataContext context, 
             IUserHelper userHelper,
             ICombosHelper combosHeper,
-            IConverterHelper converterHelper)
+            IConverterHelper converterHelper,
+            IImageHelper imageHelper)
         {
             _context = context;
             _userHelper = userHelper;
             _combosHeper = combosHeper;
             _converterHelper = converterHelper;
+            _imageHelper = imageHelper;
         }
 
         // GET: Owners
@@ -272,18 +276,8 @@ namespace MyVet.Web.Controllers
 
                 if (model.ImageFile != null)
                 {
-                    var guid = Guid.NewGuid().ToString();
-                    var file = $"{guid}.jpg";
-                    path = Path.Combine(
-                        Directory.GetCurrentDirectory(),
-                        "wwwroot\\images\\Pets",
-                        file);
-                    using (var stream = new FileStream(path, FileMode.Create))
-                    {
-                        await model.ImageFile.CopyToAsync(stream);
-                    }
-
-                    /*return*/ path=$"~/images/Pets/{file}";
+                    path = await _imageHelper.UploadImageAsync(model.ImageFile);
+                    
                 }//final if
 
                 var pet = await _converterHelper.ToPetAsync(model, path);
@@ -293,8 +287,51 @@ namespace MyVet.Web.Controllers
             }//final if
 
             return View(model);
-        }
+        }//final
 
-        
+
+        public async Task<IActionResult> EditPet(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var pet = await _context.Pets
+                .Include(p=> p.Owner)
+                .Include(p=>p.PetType)
+                .FirstOrDefaultAsync(p=>p.Id==id);
+
+            if (pet == null)
+            {
+                return NotFound();
+            }
+
+            
+            return View(_converterHelper.ToPetViewModel(pet));
+        }//final
+
+
+        [HttpPost]
+        public async Task<IActionResult> EditPet(PetViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var path = model.ImageUrl;
+
+                if (model.ImageFile != null)
+                {
+                    path = await _imageHelper.UploadImageAsync(model.ImageFile);
+
+                }//final if
+
+                var pet = await _converterHelper.ToPetAsync(model, path);
+                _context.Pets.Update(pet);
+                await _context.SaveChangesAsync();
+                return RedirectToAction($"Details/{model.OwnerId}");
+            }
+
+            return View(model);
+        }//final
     }
 }
