@@ -8,6 +8,7 @@ namespace MyVet.Web.DATA.Entities
 {
     public class Pet
     {
+       
         public int Id { get; set; }
 
         [Display(Name = "Nombre")]
@@ -24,7 +25,7 @@ namespace MyVet.Web.DATA.Entities
 
         [Display(Name = "Nacido")]
         [Required(ErrorMessage = "el campo {0} es obligatorio")]
-        [DataType(DataType.DateTime)]
+        //[DataType(DataType.DateTime)]
         [DisplayFormat(DataFormatString = "{0:yyyy/MM/dd}", ApplyFormatInEditMode = true)]
         public DateTime Born { get; set; }
 
@@ -34,6 +35,7 @@ namespace MyVet.Web.DATA.Entities
         public Owner Owner { get; set; }
         public PetType PetType { get; set; }
         public ICollection<History> Histories { get; set; }
+        public ICollection<Agenda> Agendas { get; set; }
 
 
         //TODO: replace the correct URL for the image
@@ -44,5 +46,7 @@ namespace MyVet.Web.DATA.Entities
         [Display(Name = "Fecha")]
         [DisplayFormat(DataFormatString = "{0:yyyy/MM/dd HH:mm}", ApplyFormatInEditMode = true)]
         public DateTime BornLocal => Born.ToLocalTime();
+
+        
     }
 }

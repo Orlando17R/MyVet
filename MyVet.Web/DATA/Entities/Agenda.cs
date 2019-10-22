@@ -10,15 +10,18 @@ namespace MyVet.Web.DATA.Entities
     {
         public int Id { get; set; }
 
+        //RELACION TABLA BDD
+        public Pet Pet { get; set; }
+        public Owner Owner { get; set; }
+        
+        
         [Display(Name = "Fecha")]
         [Required(ErrorMessage = "el campo {0} es obligatorio.")]
         [DataType(DataType.DateTime)]
         [DisplayFormat(DataFormatString = "{0:yyyy/MM/dd H:mm tt}", ApplyFormatInEditMode = true)]
         public DateTime Date { get; set; }
 
-        //RELACION TABLA BDD
-        public Pet Pet { get; set; }
-        public Owner Owner { get; set; }
+        
 
 
 

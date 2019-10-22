@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -21,15 +22,18 @@ namespace MyVet.Web.Controllers
         private readonly DataContext _context;
         private readonly IUserHelper _userHelper;
         private readonly ICombosHelper _combosHeper;
+        private readonly IConverterHelper _converterHelper;
 
         public OwnersController(
             DataContext context, 
             IUserHelper userHelper,
-            ICombosHelper combosHeper)
+            ICombosHelper combosHeper,
+            IConverterHelper converterHelper)
         {
             _context = context;
             _userHelper = userHelper;
             _combosHeper = combosHeper;
+            _converterHelper = converterHelper;
         }
 
         // GET: Owners
@@ -257,6 +261,40 @@ namespace MyVet.Web.Controllers
             };
 
             return View(model);
+        }//final
+
+       [HttpPost]
+        public async Task<IActionResult> AddPet(PetViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var path = string.Empty;
+
+                if (model.ImageFile != null)
+                {
+                    var guid = Guid.NewGuid().ToString();
+                    var file = $"{guid}.jpg";
+                    path = Path.Combine(
+                        Directory.GetCurrentDirectory(),
+                        "wwwroot\\images\\Pets",
+                        file);
+                    using (var stream = new FileStream(path, FileMode.Create))
+                    {
+                        await model.ImageFile.CopyToAsync(stream);
+                    }
+
+                    /*return*/ path=$"~/images/Pets/{file}";
+                }//final if
+
+                var pet = await _converterHelper.ToPetAsync(model, path);
+                _context.Pets.Add(pet);
+                await _context.SaveChangesAsync();
+                return RedirectToAction($"Details/{model.OwnerId}");
+            }//final if
+
+            return View(model);
         }
+
+        
     }
 }

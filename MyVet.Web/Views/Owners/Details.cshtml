@@ -42,7 +42,7 @@
             @Html.DisplayFor(model => model.User.PhoneNumber)
         </dd>
         <dt>
-            Pets
+            Mascota
         </dt>
         <dd>
             @Html.DisplayFor(model => model.Pets.Count)
@@ -92,7 +92,7 @@ else
                     <td>
                         @if (!string.IsNullOrEmpty(item.ImageUrl))
                         {
-                            <img src="@Url.Content(item.ImageUrl)" alt="Image" style="width:200px;height:200px;max-width: 100%; height: auto;" />
+                            <img src="@Url.Content(item.ImageUrl)" alt="Image" style="width:200px;height:200px;" />
                         }
 
 
