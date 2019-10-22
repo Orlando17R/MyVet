@@ -14,6 +14,7 @@ using Microsoft.Extensions.DependencyInjection;
 using MyVet.Web.Data;
 using MyVet.Web.DATA;
 using MyVet.Web.DATA.Entities;
+using MyVet.Web.Helpers;
 using MyVet.Web.HELPERS;
 
 namespace MyVet.Web
@@ -55,6 +56,7 @@ namespace MyVet.Web
 
             services.AddTransient<SeedDb>();
             services.AddScoped<IUserHelper, UserHelper>();
+            services.AddScoped<ICombosHelper, CombosHelper>();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 

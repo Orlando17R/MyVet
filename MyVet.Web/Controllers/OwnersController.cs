@@ -3,11 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MyVet.Web.DATA;
 using MyVet.Web.DATA.Entities;
+using MyVet.Web.Helpers;
+using MyVet.Web.HELPERS;
+using MyVet.Web.Models;
 
 namespace MyVet.Web.Controllers
 {
@@ -15,10 +19,17 @@ namespace MyVet.Web.Controllers
     public class OwnersController : Controller
     {
         private readonly DataContext _context;
+        private readonly IUserHelper _userHelper;
+        private readonly ICombosHelper _combosHeper;
 
-        public OwnersController(DataContext context)
+        public OwnersController(
+            DataContext context, 
+            IUserHelper userHelper,
+            ICombosHelper combosHeper)
         {
             _context = context;
+            _userHelper = userHelper;
+            _combosHeper = combosHeper;
         }
 
         // GET: Owners
@@ -70,7 +81,7 @@ namespace MyVet.Web.Controllers
         // POST: Owners/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
+        /*[HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id")] Owner owner)
         {
@@ -81,7 +92,62 @@ namespace MyVet.Web.Controllers
                 return RedirectToAction(nameof(Index));
             }
             return View(owner);
+        }*/
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(AddUserViewModel view)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await AddUser(view);
+                if (user == null)
+                {
+                    ModelState.AddModelError(string.Empty, "este email ya esta en uso.");
+                    return View(view);
+                }
+
+                var owner = new Owner
+                {
+                    Pets = new List<Pet>(),
+                    User = user,
+                };
+
+                _context.Owners.Add(owner);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+
+            return View(view);
         }
+
+
+        private async Task<User> AddUser(AddUserViewModel view)
+        {
+            var user = new User
+            {
+                Address = view.Address,
+                Document = view.Document,
+                Email = view.Username,
+                FirstName = view.FirstName,
+                LastName = view.LastName,
+                PhoneNumber = view.PhoneNumber,
+                UserName = view.Username
+            };
+
+            var result = await _userHelper.AddUserAsync(user, view.Password);
+            if (result != IdentityResult.Success)
+            {
+                return null;
+            }
+
+            var newUser = await _userHelper.GetUserByEmailAsync(view.Username);
+            await _userHelper.AddUserToRoleAsync(newUser, "Customer");
+            return newUser;
+        }
+
+
 
         // GET: Owners/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -166,6 +232,31 @@ namespace MyVet.Web.Controllers
         private bool OwnerExists(int id)
         {
             return _context.Owners.Any(e => e.Id == id);
+        }
+
+        public async Task<IActionResult> AddPet(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var owner = await _context.Owners.FindAsync(id.Value);
+
+            
+            if (owner == null)
+            {
+                return NotFound();
+            }
+
+            var model = new PetViewModel
+            {
+                Born=DateTime.Today,
+                OwnerId=owner.Id,
+                PetTypes = _combosHeper.GetComboPetTypes()
+            };
+
+            return View(model);
         }
     }
 }
