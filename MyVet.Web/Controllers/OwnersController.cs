@@ -22,7 +22,7 @@ namespace MyVet.Web.Controllers
     {
         private readonly DataContext _context;
         private readonly IUserHelper _userHelper;
-        private readonly ICombosHelper _combosHeper;
+        private readonly ICombosHelper _combosHelper;
         private readonly IConverterHelper _converterHelper;
         private readonly IImageHelper _imageHelper;
 
@@ -35,7 +35,7 @@ namespace MyVet.Web.Controllers
         {
             _context = context;
             _userHelper = userHelper;
-            _combosHeper = combosHeper;
+            _combosHelper = combosHeper;
             _converterHelper = converterHelper;
             _imageHelper = imageHelper;
         }
@@ -261,7 +261,7 @@ namespace MyVet.Web.Controllers
             {
                 Born=DateTime.Today,
                 OwnerId=owner.Id,
-                PetTypes = _combosHeper.GetComboPetTypes()
+                PetTypes = _combosHelper.GetComboPetTypes()
             };
 
             return View(model);
@@ -286,7 +286,7 @@ namespace MyVet.Web.Controllers
                 return RedirectToAction($"Details/{model.OwnerId}");
             }//final if
 
-            model.PetTypes = _combosHeper.GetComboPetTypes();
+            model.PetTypes = _combosHelper.GetComboPetTypes();
             return View(model);
         }//final
 
@@ -332,7 +332,7 @@ namespace MyVet.Web.Controllers
                 return RedirectToAction($"Details/{model.OwnerId}");
             }
 
-            model.PetTypes = _combosHeper.GetComboPetTypes();
+            model.PetTypes = _combosHelper.GetComboPetTypes();
             return View(model);
         }//final
 
@@ -356,6 +356,45 @@ namespace MyVet.Web.Controllers
 
             return View(pet);
         }
+
+        public async Task<IActionResult> AddHistory(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var pet = await _context.Pets.FindAsync(id.Value);
+            if (pet == null)
+            {
+                return NotFound();
+            }
+
+            var model = new HistoryViewModel
+            {
+                Date = DateTime.Now,
+                PetId = pet.Id,
+                ServiceTypes = _combosHelper.GetComboServiceTypes(),
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddHistory(HistoryViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var history = await _converterHelper.ToHistoryAsync(model, true);
+                _context.Histories.Add(history);
+                await _context.SaveChangesAsync();
+                return RedirectToAction($"{nameof(DetailsPet)}/{model.PetId}");
+            }
+
+            model.ServiceTypes = _combosHelper.GetComboServiceTypes();
+            return View(model);
+        }
+
 
     }
 }
