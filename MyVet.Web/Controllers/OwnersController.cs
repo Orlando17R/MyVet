@@ -286,6 +286,7 @@ namespace MyVet.Web.Controllers
                 return RedirectToAction($"Details/{model.OwnerId}");
             }//final if
 
+            model.PetTypes = _combosHeper.GetComboPetTypes();
             return View(model);
         }//final
 
@@ -331,7 +332,30 @@ namespace MyVet.Web.Controllers
                 return RedirectToAction($"Details/{model.OwnerId}");
             }
 
+            model.PetTypes = _combosHeper.GetComboPetTypes();
             return View(model);
         }//final
+
+        public async Task<IActionResult> DetailsPet(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var pet = await _context.Pets
+                .Include(p => p.Owner)
+                .ThenInclude(o => o.User)
+                .Include(p => p.Histories)
+                .ThenInclude(h => h.ServiceType)
+                .FirstOrDefaultAsync(o => o.Id == id.Value);
+            if (pet == null)
+            {
+                return NotFound();
+            }
+
+            return View(pet);
+        }
+
     }
 }
