@@ -83,7 +83,13 @@ namespace MyVet.Web.HELPERS
 
             var response = await _userManager.DeleteAsync(user);
             return response.Succeeded;
-        }
+        }//final
+
+        public async Task<IdentityResult> UpdateUserAsync(User user)
+        {
+            return await _userManager.UpdateAsync(user);
+        }//final
+
 
 
 

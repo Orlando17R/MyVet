@@ -157,8 +157,59 @@ namespace MyVet.Web.Controllers
 
 
 
-        // GET: Owners/Edit/5
         public async Task<IActionResult> Edit(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var owner = await _context.Owners
+                .Include(o => o.User)
+                .FirstOrDefaultAsync(o => o.Id == id.Value);
+            if (owner == null)
+            {
+                return NotFound();
+            }
+
+            var model = new EditUserViewModel
+            {
+                Address = owner.User.Address,
+                Document = owner.User.Document,
+                FirstName = owner.User.FirstName,
+                Id = owner.Id,
+                LastName = owner.User.LastName,
+                PhoneNumber = owner.User.PhoneNumber
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(EditUserViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var owner = await _context.Owners
+                    .Include(o => o.User)
+                    .FirstOrDefaultAsync(o => o.Id == model.Id);
+
+                owner.User.Document = model.Document;
+                owner.User.FirstName = model.FirstName;
+                owner.User.LastName = model.LastName;
+                owner.User.Address = model.Address;
+                owner.User.PhoneNumber = model.PhoneNumber;
+
+                await _userHelper.UpdateUserAsync(owner.User);
+                return RedirectToAction(nameof(Index));
+            }
+
+            return View(model);
+        }
+        
+        // GET: Owners/Edit/5
+        /*public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
             {
@@ -171,12 +222,12 @@ namespace MyVet.Web.Controllers
                 return NotFound();
             }
             return View(owner);
-        }
+        }*/
 
         // POST: Owners/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
+        /*[HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id")] Owner owner)
         {
@@ -206,7 +257,7 @@ namespace MyVet.Web.Controllers
                 return RedirectToAction(nameof(Index));
             }
             return View(owner);
-        }
+        }*/
 
         // GET: Owners/Delete/5
         public async Task<IActionResult> Delete(int? id)
