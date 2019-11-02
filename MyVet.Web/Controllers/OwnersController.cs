@@ -217,17 +217,29 @@ namespace MyVet.Web.Controllers
             }
 
             var owner = await _context.Owners
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .Include(o => o.User)
+                .Include(o=>o.Pets)
+                .FirstOrDefaultAsync(o => o.Id == id);
             if (owner == null)
             {
                 return NotFound();
             }
 
-            return View(owner);
+            if (owner.Pets.Count > 0)
+            {
+                ModelState.AddModelError(string.Empty,"No se puede eliminar");
+                return RedirectToAction(nameof(Index));
+            }
+
+            await _userHelper.DeleteUserAsync(owner.User.Email);
+
+            _context.Owners.Remove(owner);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
         }
 
         // POST: Owners/Delete/5
-        [HttpPost, ActionName("Delete")]
+        /*[HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
@@ -235,7 +247,7 @@ namespace MyVet.Web.Controllers
             _context.Owners.Remove(owner);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
-        }
+        }*/
 
         private bool OwnerExists(int id)
         {
