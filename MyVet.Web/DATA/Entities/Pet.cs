@@ -39,14 +39,14 @@ namespace MyVet.Web.DATA.Entities
 
 
         //TODO: replace the correct URL for the image
-        /*public string ImageFullPath => string.IsNullOrEmpty(ImageUrl)
+        public string ImageFullPath => string.IsNullOrEmpty(ImageUrl)
             ? null
-            : $"https://TDB.azurewebsites.net{ImageUrl.Substring(1)}";*/
+            : $"https://TDB.azurewebsites.net{ImageUrl.Substring(1)}";
 
         [Display(Name = "Fecha")]
         [DisplayFormat(DataFormatString = "{0:yyyy/MM/dd HH:mm}", ApplyFormatInEditMode = true)]
         public DateTime BornLocal => Born.ToLocalTime();
 
-        
+        //public string ImageFullPath { get; set; }
     }
 }
