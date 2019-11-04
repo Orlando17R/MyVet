@@ -4,11 +4,15 @@ using Prism.Navigation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using MyVet;
+using MyVet.Common.Models;
+using MyVet.Common.Services;
 
 namespace MyVet.Prism.ViewModels
 {
     public class LoginPageViewModel : ViewModelBase
     {
+        private readonly IApiService _apiService;
         private string _password;
         private bool _isRunning;
         private bool _isEnable;
@@ -16,12 +20,13 @@ namespace MyVet.Prism.ViewModels
 
 
         public LoginPageViewModel(
-            INavigationService navigationService): base(navigationService)
+            INavigationService navigationService,
+            IApiService apiService): base(navigationService)
         {
             Title = "MyVet - LOGIN";
             IsRunning = false;
             IsEnable = true;
-
+            _apiService = apiService;
         }
 
         public DelegateCommand LoginCommand => _loginCommand ?? (_loginCommand = new DelegateCommand(Login));
@@ -57,6 +62,28 @@ namespace MyVet.Prism.ViewModels
             if (string.IsNullOrEmpty(Password))
             {
                 await App.Current.MainPage.DisplayAlert("Error", "Debe digitar una contrasena.", "Aceptar");
+                return;
+            }
+
+            IsRunning = true;
+            IsEnable = false;
+
+            var request = new TokenRequest
+            {
+                Password = Password,
+                Username = Email
+            };
+
+            var url = App.Current.Resources["UrlAPI"].ToString();
+            var response = await _apiService.GetTokenAsync(url,"Account","/CreateToken",request);
+
+            IsRunning = false;
+            IsEnable = true;
+
+            if (!response.IsSuccess)
+            {
+                await App.Current.MainPage.DisplayAlert("Error", "Email o password no validos", "Aceptar");
+                Password = string.Empty;
                 return;
             }
 
