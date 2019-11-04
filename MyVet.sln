@@ -3,9 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29403.142
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyVet.Common", "MyVet.Common\MyVet.Common.csproj", "{E454E78D-2238-4E50-B829-A13F883663BD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyVet.Common", "MyVet.Common\MyVet.Common.csproj", "{E454E78D-2238-4E50-B829-A13F883663BD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyVet.Web", "MyVet.Web\MyVet.Web.csproj", "{9DE69A96-2044-4DA5-A599-DB277A4C7ED6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyVet.Web", "MyVet.Web\MyVet.Web.csproj", "{9DE69A96-2044-4DA5-A599-DB277A4C7ED6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyVet.Prism", "MyVet.Prism\MyVet.Prism\MyVet.Prism.csproj", "{7AC044DB-10AE-4E54-BFDB-3E2A08CED5C4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyVet.Prism.Android", "MyVet.Prism\MyVet.Prism.Android\MyVet.Prism.Android.csproj", "{36C77866-9370-4A3C-9047-650B32334EAA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +25,16 @@ Global
 		{9DE69A96-2044-4DA5-A599-DB277A4C7ED6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9DE69A96-2044-4DA5-A599-DB277A4C7ED6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9DE69A96-2044-4DA5-A599-DB277A4C7ED6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7AC044DB-10AE-4E54-BFDB-3E2A08CED5C4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7AC044DB-10AE-4E54-BFDB-3E2A08CED5C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7AC044DB-10AE-4E54-BFDB-3E2A08CED5C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7AC044DB-10AE-4E54-BFDB-3E2A08CED5C4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{36C77866-9370-4A3C-9047-650B32334EAA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{36C77866-9370-4A3C-9047-650B32334EAA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{36C77866-9370-4A3C-9047-650B32334EAA}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{36C77866-9370-4A3C-9047-650B32334EAA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{36C77866-9370-4A3C-9047-650B32334EAA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{36C77866-9370-4A3C-9047-650B32334EAA}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
