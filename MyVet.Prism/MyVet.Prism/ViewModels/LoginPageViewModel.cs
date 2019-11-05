@@ -30,6 +30,11 @@ namespace MyVet.Prism.ViewModels
             Title = "MyVet - LOGIN";
             IsRunning = false;
             IsEnable = true;
+
+
+            //DELETE DESPUES
+            Email = "orlan217@hotmail.com";
+            Password = "123456789";
             
         }
 
