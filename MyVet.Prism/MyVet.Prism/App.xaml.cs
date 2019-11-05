@@ -24,9 +24,10 @@ namespace MyVet.Prism
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
-            containerRegistry.Register<IApiService, IApiService>(); 
+            containerRegistry.Register<IApiService, ApiService>(); 
             containerRegistry.RegisterForNavigation<NavigationPage>();
             containerRegistry.RegisterForNavigation<LoginPage, LoginPageViewModel>();
+            containerRegistry.RegisterForNavigation<PetsPage, PetsPageViewModel>();
         }
     }
 }
