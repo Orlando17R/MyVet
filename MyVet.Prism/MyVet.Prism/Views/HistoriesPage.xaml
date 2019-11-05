@@ -1,0 +1,76 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:prism="http://prismlibrary.com"
+             prism:ViewModelLocator.AutowireViewModel="True"
+             x:Class="MyVet.Prism.Views.HistoriesPage"
+             Title="{Binding Title}">
+
+
+    <StackLayout Padding="10">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="48"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+
+                            <Label
+                                Grid.Column="0"
+                                FontAttributes="Bold"
+                                Text="Date"/>
+                            <Label
+                                Grid.Column="1"
+                                FontAttributes="Bold"
+                                Text="ServiceType"/>
+                             <Label
+                                Grid.Column="2"
+                                FontAttributes="Bold"
+                                 Text="Description"/>
+        </Grid>
+
+        <ListView 
+            HasUnevenRows="True" 
+            ItemsSource="{Binding Histories}">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto"/>
+                            </Grid.RowDefinitions>
+
+                            <Label
+                                Grid.Column="0"
+                                VerticalOptions="Center"
+                                Text="{Binding DateLocal, StringFormat='{0:yyyy/MM/dd}' }"/>
+                            <Label
+                                Grid.Column="1"
+                                VerticalOptions="Center"
+                                Text="{Binding ServiceType}"/>
+                            <Label
+                                Grid.Column="2"
+                                VerticalOptions="Center"
+                                Text="{Binding Description}"/>
+                            <Image
+                                Grid.Column="3"
+                                Source="ic_chevron_right"/>
+                        </Grid>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </StackLayout>
+</ContentPage>
