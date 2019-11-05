@@ -9,7 +9,7 @@
         <ResourceDictionary>
 
             <!-- Parameters -->
-            <x:String x:Key="UrlAPI">https://myvet.azurewebsites.net</x:String>
+            <x:String x:Key="UrlAPI">https://myvetduarte.azurewebsites.net</x:String>
 
         </ResourceDictionary>
 

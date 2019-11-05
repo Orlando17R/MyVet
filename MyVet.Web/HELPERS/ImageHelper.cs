@@ -15,8 +15,7 @@ namespace MyVet.Web.HELPERS
             var file = $"{guid}.jpg";
             var path = Path.Combine(
                 Directory.GetCurrentDirectory(),
-                "wwwroot\\images\\Pets",
-                file);
+                "wwwroot\\images\\Pets", file);
 
             using (var stream = new FileStream(path, FileMode.Create))
             {
