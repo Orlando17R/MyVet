@@ -5,8 +5,8 @@
              prism:ViewModelLocator.AutowireViewModel="True"
              x:Class="MyVet.Prism.Views.LoginPage"
              Title="{Binding Title}">
-
-    <StackLayout
+    <ScrollView>
+        <StackLayout
     	Padding="10">
         <Label
         	Text="Email"/>
@@ -33,5 +33,5 @@
         	IsEnabled="{Binding IsEnabled}"
         	Text="Iniciar Sesion"/>
     </StackLayout>
-
+</ScrollView>
 </ContentPage>
